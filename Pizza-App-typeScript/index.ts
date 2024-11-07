@@ -1,13 +1,13 @@
 type Pizza = {
-  name: string,
-  price: number
-}
+  name: string;
+  price: number;
+};
 
 type Order = {
-    pizza: Pizza,
-    orderID: number,
-    status: string,
-  }
+  pizza: Pizza;
+  orderID: number;
+  status: string;
+};
 
 const menu = [
   { name: "Margherita", price: 8 },
@@ -19,7 +19,7 @@ const menu = [
 let cashInRegister = 100;
 let nextOrderID = 1;
 
-const orderQueue= [];
+const orderQueue = [];
 
 const addNewPizza = (pizzaObj: Pizza) => {
   for (let pizza of menu) {
