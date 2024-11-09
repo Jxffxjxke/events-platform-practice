@@ -1,4 +1,5 @@
 type Pizza = {
+  id: number;
   name: string;
   price: number;
 };
@@ -6,20 +7,20 @@ type Pizza = {
 type Order = {
   pizza: Pizza;
   orderID: number;
-  status: string;
+  status: "ordered" | "completed";
 };
 
-const menu = [
-  { name: "Margherita", price: 8 },
-  { name: "Pepperoni", price: 10 },
-  { name: "Hawaiian", price: 10 },
-  { name: "Veggie", price: 9 },
+const menu: Pizza[] = [
+  { id: 1, name: "Margherita", price: 8 },
+  { id: 2, name: "Pepperoni", price: 10 },
+  { id: 3, name: "Hawaiian", price: 10 },
+  { id: 4, name: "Veggie", price: 9 },
 ];
 
 let cashInRegister = 100;
 let nextOrderID = 1;
 
-const orderQueue = [];
+const orderQueue: Order[] = [];
 
 const addNewPizza = (pizzaObj: Pizza) => {
   for (let pizza of menu) {
@@ -27,13 +28,14 @@ const addNewPizza = (pizzaObj: Pizza) => {
       throw new Error();
     }
   }
+  pizzaObj.id = menu.length + 1;
   [...menu, pizzaObj];
 };
 
 const placeOrder = (pizzaName: string) => {
   const selectedPizza = menu.find((pizzaObj) => pizzaObj.name === pizzaName);
   if (!selectedPizza) {
-    console.error("${pizzaname} does not exist in the menu");
+    console.error(`${pizzaName} does not exist in the menu`);
     return;
   }
   cashInRegister += selectedPizza.price;
@@ -50,8 +52,20 @@ const completeOrder = (orderID: number) => {
   const selectedOrder = orderQueue.find(
     (orderObj: Order) => orderObj.orderID === orderID
   );
+  if (!selectedOrder) {
+    console.error(`Order ${orderID} cannot be found`);
+    return;
+  }
   selectedOrder.status = "completed";
   return selectedOrder;
+};
+
+const getPizzaDetail = (identifier: string | number) => {
+  if (typeof identifier !== 'string' || 'number') {
+    throw new TypeError('Parameter `identifier` must be either a string or a number')
+  }
+  const keyToSearch = typeof identifier === "string" ? "name" : "id";
+  return menu.find((pizzaObj) => pizzaObj[keyToSearch] === identifier);
 };
 
 addNewPizza({ name: "Chicken Bacon Ranch", price: 12 });
