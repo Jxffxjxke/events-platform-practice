@@ -30,7 +30,7 @@ const addNewPizza = (pizzaObj: Pizza): void => {
     }
   }
   pizzaObj.id = nextPizzaID++;
-  [...menu, pizzaObj];
+  menu.push(pizzaObj);
 };
 
 const placeOrder = (pizzaName: string): Order | undefined => {
@@ -78,6 +78,7 @@ addNewPizza({ name: "Spicy Sausage", price: 11 });
 placeOrder("Chicken Bacon Ranch");
 completeOrder(1);
 
+console.log('After functions have run:')
 console.log({ menu });
 console.log({ cashInRegister });
 console.log({ orderQueue });
