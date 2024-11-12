@@ -14,7 +14,7 @@ const users: User[] = [
   { username: "guest_user", role: "guest" },
 ];
 
-const fectchUserDetails = (username: string) => {
+const fectchUserDetails = (username: string): User => {
   const user = users.find((user) => user.username === username);
   if (!user) {
     throw new Error(`User with userbname ${username} not found`);

@@ -1,5 +1,5 @@
 type Pizza = {
-  id: number;
+  id?: number;
   name: string;
   price: number;
 };
@@ -19,20 +19,21 @@ const menu: Pizza[] = [
 
 let cashInRegister = 100;
 let nextOrderID = 1;
+let nextPizzaID = 5;
 
 const orderQueue: Order[] = [];
 
-const addNewPizza = (pizzaObj: Pizza) => {
+const addNewPizza = (pizzaObj: Pizza): void => {
   for (let pizza of menu) {
     if (pizza.name === pizzaObj.name) {
-      throw new Error();
+      throw new Error("Pizza already exists");
     }
   }
-  pizzaObj.id = menu.length + 1;
+  pizzaObj.id = nextPizzaID++;
   [...menu, pizzaObj];
 };
 
-const placeOrder = (pizzaName: string) => {
+const placeOrder = (pizzaName: string): Order | undefined => {
   const selectedPizza = menu.find((pizzaObj) => pizzaObj.name === pizzaName);
   if (!selectedPizza) {
     console.error(`${pizzaName} does not exist in the menu`);
@@ -48,7 +49,7 @@ const placeOrder = (pizzaName: string) => {
   return newOrder;
 };
 
-const completeOrder = (orderID: number) => {
+const completeOrder = (orderID: number): Order | undefined => {
   const selectedOrder = orderQueue.find(
     (orderObj: Order) => orderObj.orderID === orderID
   );
@@ -60,9 +61,11 @@ const completeOrder = (orderID: number) => {
   return selectedOrder;
 };
 
-const getPizzaDetail = (identifier: string | number) => {
-  if (typeof identifier !== 'string' || 'number') {
-    throw new TypeError('Parameter `identifier` must be either a string or a number')
+const getPizzaDetail = (identifier: string | number): Pizza | undefined => {
+  if (typeof identifier !== "string" || "number") {
+    throw new TypeError(
+      "Parameter `identifier` must be either a string or a number"
+    );
   }
   const keyToSearch = typeof identifier === "string" ? "name" : "id";
   return menu.find((pizzaObj) => pizzaObj[keyToSearch] === identifier);
