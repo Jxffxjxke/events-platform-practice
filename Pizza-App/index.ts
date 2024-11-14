@@ -1,5 +1,5 @@
 type Pizza = {
-  id?: number;
+  id: number;
   name: string;
   price: number;
 };
@@ -23,14 +23,18 @@ let nextPizzaID = 5;
 
 const orderQueue: Order[] = [];
 
-const addNewPizza = (pizzaObj: Pizza): void => {
+const addNewPizza = (pizzaObj: Omit<Pizza, "id">): Pizza => {
   for (let pizza of menu) {
     if (pizza.name === pizzaObj.name) {
       throw new Error("Pizza already exists");
     }
   }
-  pizzaObj.id = nextPizzaID++;
-  menu.push(pizzaObj);
+  const newPizza: Pizza = {
+    id: nextPizzaID++,
+    ...pizzaObj,
+  };
+  menu.push(newPizza);
+  return newPizza;
 };
 
 const placeOrder = (pizzaName: string): Order | undefined => {
@@ -48,6 +52,14 @@ const placeOrder = (pizzaName: string): Order | undefined => {
   orderQueue.push(newOrder);
   return newOrder;
 };
+
+const addToArray = <T>(array: T[], item: T): T[] => {
+  [...array, item];
+  return array;
+};
+
+addToArray<Pizza>(menu, { id: nextPizzaID++, name: "Chicken Bacon Ranch", price: 12 });
+addToArray<Order>(orderQueue, { orderID: nextOrderID++, pizza: menu[2], status: 'completed' });
 
 const completeOrder = (orderID: number): Order | undefined => {
   const selectedOrder = orderQueue.find(
@@ -78,7 +90,7 @@ addNewPizza({ name: "Spicy Sausage", price: 11 });
 placeOrder("Chicken Bacon Ranch");
 completeOrder(1);
 
-console.log('After functions have run:')
+console.log("After functions have run:");
 console.log({ menu });
 console.log({ cashInRegister });
 console.log({ orderQueue });
