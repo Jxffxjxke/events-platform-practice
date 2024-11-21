@@ -8,7 +8,7 @@ const EventCard = ({ event }) => (
       <Title>{event.venue.name}</Title>
       <Paragraph>{event.description}</Paragraph>
     </Card.Content>
-    <Card.Cover source={{ uri: event.largeimageurl }} />
+    <Card.Cover source={{ uri: event.xlargeimageurl }} />
   </Card>
 );
 
